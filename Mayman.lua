@@ -1,4 +1,4 @@
--- [[ LONG VERSION: RAINBOW BORDER + DYNAMIC COLOR TEXT ]] --
+-- [[ ĐÂY LÀ BẢN CHUẨN 100% - VIỀN CẦU VỒNG + CHỮ ĐỔI MÀU ]] --
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -7,82 +7,83 @@ local UIGradient = Instance.new("UIGradient")
 local MainButton = Instance.new("TextButton")
 local SubText = Instance.new("TextLabel")
 
--- GUI Configuration
+-- Cấu hình hiển thị
 ScreenGui.Parent = game.CoreGui
-ScreenGui.Name = "FinalLuckMenuLong"
+ScreenGui.Name = "RealRainbowMenu"
 
--- Main Horizontal Frame (Điều chỉnh Size dài hơn: 300x120)
+-- Menu chính (Hình chữ nhật nằm ngang)
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Nền trắng tinh
-MainFrame.Position = UDim2.new(0.5, -150, 0.4, 0) -- Căn giữa dựa trên chiều dài mới
-MainFrame.Size = UDim2.new(0, 300, 0, 120) -- Tăng chiều ngang cho giống ảnh mẫu
+MainFrame.Position = UDim2.new(0.5, -150, 0.4, 0)
+MainFrame.Size = UDim2.new(0, 300, 0, 130) -- Dài và cân đối hơn
 MainFrame.Active = true
-MainFrame.Draggable = true 
+MainFrame.Draggable = true -- Có thể di chuyển được
 
--- Rounded Corners (Bo góc mềm mại)
+-- Bo góc (Góc tròn, không nhọn)
 UICorner.CornerRadius = UDim.new(0, 25)
 UICorner.Parent = MainFrame
 
--- Rainbow Border (Viền bảy sắc cầu vồng rực rỡ)
+-- VIỀN CẦU VỒNG (Phần quan trọng nhất)
 UIStroke.Parent = MainFrame
-UIStroke.Thickness = 5 -- Viền dày hơn tí cho rõ màu
-UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Bắt buộc là trắng để hiện Gradient
+UIStroke.Thickness = 5 -- Viền dày cho đẹp
+UIStroke.Color = Color3.fromRGB(255, 255, 255) -- BẮT BUỘC TRẮNG để hiện cầu vồng
 UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 UIGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 255, 0)),
-    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 0, 255)),
-    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),    -- Đỏ
+    ColorSequenceKeypoint.new(0.2, Color3.fromRGB(255, 255, 0)),-- Vàng
+    ColorSequenceKeypoint.new(0.4, Color3.fromRGB(0, 255, 0)),  -- Xanh lá
+    ColorSequenceKeypoint.new(0.6, Color3.fromRGB(0, 255, 255)),-- Xanh dương
+    ColorSequenceKeypoint.new(0.8, Color3.fromRGB(150, 0, 255)),-- Tím
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))     -- Quay lại Đỏ
 }
 UIGradient.Parent = UIStroke
 
--- Animation xoay viền cầu vồng
+-- Hiệu ứng cầu vồng xoay vòng liên tục
 task.spawn(function()
     local rot = 0
     while task.wait(0.01) do
-        rot = rot + 2.5 -- Tốc độ xoay nhanh hơn chút cho sinh động
+        rot = rot + 2
         UIGradient.Rotation = rot % 360
     end
 end)
 
--- Main Button (Chữ đen đổi màu Xanh/Đỏ)
+-- Nút bấm (Mặc định OFF - Màu Đỏ)
 MainButton.Name = "MainButton"
 MainButton.Parent = MainFrame
 MainButton.BackgroundTransparency = 1
-MainButton.Position = UDim2.new(0, 0, 0.1, 0) -- Căn chỉnh lại vị trí chữ
+MainButton.Position = UDim2.new(0, 0, 0.1, 0)
 MainButton.Size = UDim2.new(1, 0, 0.5, 0)
 MainButton.Font = Enum.Font.SourceSansBold
 MainButton.Text = "Buff Luck x10: OFF"
-MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu Đỏ khi OFF
-MainButton.TextSize = 28 -- Chữ to rõ ràng
+MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu Đỏ mặc định
+MainButton.TextSize = 28
 
--- Subtext (Dòng chữ nhỏ bên dưới)
+-- Chữ nhỏ xác nhận (Hiện khi ON)
 SubText.Name = "SubText"
 SubText.Parent = MainFrame
 SubText.BackgroundTransparency = 1
 SubText.Position = UDim2.new(0, 0, 0.6, 0)
 SubText.Size = UDim2.new(1, 0, 0.3, 0)
 SubText.Font = Enum.Font.SourceSansItalic
-SubText.Text = "" -- Trống khi OFF
-SubText.TextColor3 = Color3.fromRGB(0, 180, 0) -- Màu xanh lá đậm khi hiện
+SubText.Text = "" 
+SubText.TextColor3 = Color3.fromRGB(0, 200, 0) -- Màu xanh lá
 SubText.TextSize = 18
 
--- Logic Bật/Tắt
-local enabled = false
+-- Logic Bật/Tắt chuẩn
+local isEnabled = false
 MainButton.MouseButton1Click:Connect(function()
-    enabled = not enabled
-    if enabled then
+    isEnabled = not isEnabled
+    if isEnabled then
+        -- Trạng thái ON
         MainButton.Text = "Buff Luck x10: ON"
-        MainButton.TextColor3 = Color3.fromRGB(0, 220, 0) -- Xanh lá cực sáng khi ON
+        MainButton.TextColor3 = Color3.fromRGB(0, 220, 0) -- Chuyển sang Xanh
         SubText.Text = "Buff successful 100%"
     else
+        -- Trạng thái OFF
         MainButton.Text = "Buff Luck x10: OFF"
-        MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Đỏ khi OFF
+        MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chuyển sang Đỏ
         SubText.Text = ""
     end
 end)
