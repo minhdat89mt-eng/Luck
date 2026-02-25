@@ -1,4 +1,4 @@
--- [[ MINI RAINBOW MENU ]] --
+-- [[ BẢN CHUẨN: KÍCH THƯỚC BÌNH THƯỜNG - VIỀN CẦU VỒNG ]] --
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -7,67 +7,77 @@ local UIGradient = Instance.new("UIGradient")
 local MainButton = Instance.new("TextButton")
 local SubText = Instance.new("TextLabel")
 
--- Cài đặt hiển thị
+-- Setup
 ScreenGui.Parent = game.CoreGui
-MainFrame.Name = "MiniLuck"
+ScreenGui.Name = "NormalSizeMenu"
+
+-- Khung kích thước bình thường (300x120)
+MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MainFrame.Position = UDim2.new(0.5, -75, 0.2, 0)
-MainFrame.Size = UDim2.new(0, 150, 0, 60) -- Kích thước tí hon
+MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) 
+MainFrame.Position = UDim2.new(0.5, -150, 0.4, 0)
+MainFrame.Size = UDim2.new(0, 300, 0, 120) 
 MainFrame.Active = true
 MainFrame.Draggable = true 
 
-UICorner.CornerRadius = UDim.new(0, 10)
+-- Bo góc
+UICorner.CornerRadius = UDim.new(0, 20)
 UICorner.Parent = MainFrame
 
--- Viền cầu vồng (Bắt buộc màu trắng để hiện màu)
+-- Viền cầu vồng
 UIStroke.Parent = MainFrame
-UIStroke.Thickness = 2.5
+UIStroke.Thickness = 4
 UIStroke.Color = Color3.fromRGB(255, 255, 255)
 UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 UIGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 0)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))
+    ColorSequenceKeypoint.new(0.2, Color3.fromRGB(255, 255, 0)),
+    ColorSequenceKeypoint.new(0.4, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(0.6, Color3.fromRGB(0, 255, 255)),
+    ColorSequenceKeypoint.new(0.8, Color3.fromRGB(255, 0, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
 }
 UIGradient.Parent = UIStroke
 
--- Hiệu ứng xoay viền
 task.spawn(function()
-    while task.wait(0.01) do 
-        UIGradient.Rotation = UIGradient.Rotation + 3 
+    local r = 0
+    while task.wait(0.01) do
+        r = r + 2.5
+        UIGradient.Rotation = r % 360
     end
 end)
 
--- Chữ nút bấm (Mặc định OFF màu Đỏ)
+-- Nút bấm chính (To rõ)
 MainButton.Parent = MainFrame
 MainButton.BackgroundTransparency = 1
-MainButton.Size = UDim2.new(1, 0, 0.7, 0)
+MainButton.Position = UDim2.new(0, 0, 0.1, 0)
+MainButton.Size = UDim2.new(1, 0, 0.5, 0)
 MainButton.Font = Enum.Font.SourceSansBold
-MainButton.Text = "Luck: OFF"
-MainButton.TextColor3 = Color3.fromRGB(255, 0, 0)
-MainButton.TextSize = 15
+MainButton.Text = "Buff Luck x10: OFF"
+MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu đỏ
+MainButton.TextSize = 28
 
--- Chữ xác nhận nhỏ
+-- Chữ nhỏ xác nhận
 SubText.Parent = MainFrame
 SubText.BackgroundTransparency = 1
 SubText.Position = UDim2.new(0, 0, 0.6, 0)
 SubText.Size = UDim2.new(1, 0, 0.3, 0)
+SubText.Font = Enum.Font.SourceSansItalic
 SubText.Text = "" 
-SubText.TextColor3 = Color3.fromRGB(0, 150, 0)
-SubText.TextSize = 10
+SubText.TextColor3 = Color3.fromRGB(0, 200, 0)
+SubText.TextSize = 18
 
--- Logic bật tắt
-local active = false
+-- Logic
+local enabled = false
 MainButton.MouseButton1Click:Connect(function()
-    active = not active
-    if active then
-        MainButton.Text = "Luck: ON"
-        MainButton.TextColor3 = Color3.fromRGB(0, 200, 0)
+    enabled = not enabled
+    if enabled then
+        MainButton.Text = "Buff Luck x10: ON"
+        MainButton.TextColor3 = Color3.fromRGB(0, 220, 0)
         SubText.Text = "Buff successful 100%"
     else
-        MainButton.Text = "Luck: OFF"
+        MainButton.Text = "Buff Luck x10: OFF"
         MainButton.TextColor3 = Color3.fromRGB(255, 0, 0)
         SubText.Text = ""
     end
