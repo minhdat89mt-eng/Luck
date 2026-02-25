@@ -1,4 +1,4 @@
--- [[ FINAL VERSION: RAINBOW BORDER + DYNAMIC COLOR TEXT ]] --
+-- [[ LONG VERSION: RAINBOW BORDER + DYNAMIC COLOR TEXT ]] --
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -9,24 +9,25 @@ local SubText = Instance.new("TextLabel")
 
 -- GUI Configuration
 ScreenGui.Parent = game.CoreGui
-ScreenGui.Name = "FinalLuckMenu"
+ScreenGui.Name = "FinalLuckMenuLong"
 
--- Main Horizontal Frame
+-- Main Horizontal Frame (Điều chỉnh Size dài hơn: 300x120)
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Nền trắng tinh
-MainFrame.Position = UDim2.new(0.5, -130, 0.4, 0)
-MainFrame.Size = UDim2.new(0, 260, 0, 110)
+MainFrame.Position = UDim2.new(0.5, -150, 0.4, 0) -- Căn giữa dựa trên chiều dài mới
+MainFrame.Size = UDim2.new(0, 300, 0, 120) -- Tăng chiều ngang cho giống ảnh mẫu
 MainFrame.Active = true
 MainFrame.Draggable = true 
 
--- Rounded Corners (Góc bo tròn cực mượt)
-UICorner.CornerRadius = UDim.new(0, 20)
+-- Rounded Corners (Bo góc mềm mại)
+UICorner.CornerRadius = UDim.new(0, 25)
 UICorner.Parent = MainFrame
 
--- Rainbow Border (Tạo viền bảy sắc cầu vồng)
+-- Rainbow Border (Viền bảy sắc cầu vồng rực rỡ)
 UIStroke.Parent = MainFrame
-UIStroke.Thickness = 4 -- Độ dày viền
+UIStroke.Thickness = 5 -- Viền dày hơn tí cho rõ màu
+UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Bắt buộc là trắng để hiện Gradient
 UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 UIGradient.Color = ColorSequence.new{
@@ -40,26 +41,27 @@ UIGradient.Color = ColorSequence.new{
 }
 UIGradient.Parent = UIStroke
 
--- Loop làm cho viền cầu vồng xoay vòng liên tục
+-- Animation xoay viền cầu vồng
 task.spawn(function()
-    local rotation = 0
+    local rot = 0
     while task.wait(0.01) do
-        rotation = rotation + 2
-        UIGradient.Rotation = rotation % 360
+        rot = rot + 2.5 -- Tốc độ xoay nhanh hơn chút cho sinh động
+        UIGradient.Rotation = rot % 360
     end
 end)
 
--- Main Button (Chữ đổi màu theo trạng thái)
+-- Main Button (Chữ đen đổi màu Xanh/Đỏ)
 MainButton.Name = "MainButton"
 MainButton.Parent = MainFrame
 MainButton.BackgroundTransparency = 1
-MainButton.Size = UDim2.new(1, 0, 0.6, 0)
+MainButton.Position = UDim2.new(0, 0, 0.1, 0) -- Căn chỉnh lại vị trí chữ
+MainButton.Size = UDim2.new(1, 0, 0.5, 0)
 MainButton.Font = Enum.Font.SourceSansBold
 MainButton.Text = "Buff Luck x10: OFF"
-MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Mặc định màu Đỏ
-MainButton.TextSize = 25
+MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu Đỏ khi OFF
+MainButton.TextSize = 28 -- Chữ to rõ ràng
 
--- Subtext (Chữ nhỏ hiện ra khi bật)
+-- Subtext (Dòng chữ nhỏ bên dưới)
 SubText.Name = "SubText"
 SubText.Parent = MainFrame
 SubText.BackgroundTransparency = 1
@@ -67,24 +69,20 @@ SubText.Position = UDim2.new(0, 0, 0.6, 0)
 SubText.Size = UDim2.new(1, 0, 0.3, 0)
 SubText.Font = Enum.Font.SourceSansItalic
 SubText.Text = "" -- Trống khi OFF
-SubText.TextColor3 = Color3.fromRGB(0, 200, 0) -- Chữ nhỏ màu xanh lá cho đẹp
-SubText.TextSize = 16
+SubText.TextColor3 = Color3.fromRGB(0, 180, 0) -- Màu xanh lá đậm khi hiện
+SubText.TextSize = 18
 
--- Logic bật/tắt (Toggle)
-local isEnabled = false
+-- Logic Bật/Tắt
+local enabled = false
 MainButton.MouseButton1Click:Connect(function()
-    isEnabled = not isEnabled
-    if isEnabled then
-        -- Khi bật: Chữ Xanh lá + Hiện dòng xác nhận
+    enabled = not enabled
+    if enabled then
         MainButton.Text = "Buff Luck x10: ON"
-        MainButton.TextColor3 = Color3.fromRGB(0, 200, 0) 
+        MainButton.TextColor3 = Color3.fromRGB(0, 220, 0) -- Xanh lá cực sáng khi ON
         SubText.Text = "Buff successful 100%"
-        print("Luck Buff: Activated")
     else
-        -- Khi tắt: Chữ Đỏ + Ẩn dòng xác nhận
         MainButton.Text = "Buff Luck x10: OFF"
-        MainButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+        MainButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Đỏ khi OFF
         SubText.Text = ""
-        print("Luck Buff: Deactivated")
     end
 end)
